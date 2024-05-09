@@ -50,12 +50,14 @@ RUN wget https://raw.githubusercontent.com/osrf/gazebo_models/master/sun/model.c
 # --- ROS2 FOXY INSTALLATION ---
 
 # Set locale
+
 RUN apt-get update && apt-get install -y locales
 RUN locale-gen en_US en_US.UTF-8
 RUN update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
 ENV LANG en_US.UTF-8
 
 # Add ROS 2 apt repository
+# RUN apt-get update && apt-get upgrade -y
 RUN apt-get update && apt-get install -y software-properties-common curl
 RUN add-apt-repository universe
 
@@ -63,7 +65,10 @@ RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o 
 RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null
 
 # Install ROS 2 packages
-RUN apt-get update && apt-get install -y ros-foxy-ros-base python3-argcomplete
+RUN apt update
+RUN apt upgrade -y
+RUN apt install ros-foxy-ros-base python3-argcomplete -y
+# RUN apt-get update && apt-get install -y ros-foxy-ros-base python3-argcomplete
 
 RUN apt-get update && apt-get install -y python3-rosdep2 python3-tk
 
@@ -73,7 +78,7 @@ RUN apt-get update && apt-get install -y ros-dev-tools
 
 # --- INITIALIZE APPLICATION ---
 
-WORKDIR /home/turtlebot3_drlnav
+WORKDIR /home/ENPM690_final
 
 RUN apt-get install -y nano tmux
 
@@ -83,7 +88,7 @@ RUN echo \
     "source /opt/ros/foxy/setup.bash\n"\
     "# ROS2 domain id for network communication, machines with the same ID will receive each others' messages\n"\
     "export ROS_DOMAIN_ID=1\n"\
-    "export DRLNAV_BASE_PATH='/home/turtlebot3_drlnav'\n"\
+    "export DRLNAV_BASE_PATH='/home/ENPM690_final'\n"\
     "# Source the workspace\n"\
     "source \$DRLNAV_BASE_PATH/install/setup.bash\n"\
     "# Allow gazebo to find our turtlebot3 models\n"\

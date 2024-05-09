@@ -4,7 +4,68 @@ This Repository has the code for the final project of ENPM690 - Robot Learning
 ## Description
 The project is about training two robots using reinforcement learning evade and pursue each other in a 3D environment. The 3D environment is created using ROS2 foxy and Gazebo. The robots are trained using the DQN algorithm. The project is implemented using the PyTorch library. The robot model used is turtlebot3.
 
-## Getting Started
+## Docker Installation
+Use this only if your system has an NVIDIA GPU and you have Docker installed on your system.
+Install Docker on your system by following the instructions on the official Docker website: https://docs.docker.com/get-docker/
+
+to install nvidia container toolkit follow the instructions on the official NVIDIA website: https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html
+
+or
+
+Follow The instructions below
+
+First, setup the package repository and the GPG key:
+```
+distribution=$(. /etc/os-release;echo $ID$VERSION_ID) \
+      && curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg \
+      && curl -s -L https://nvidia.github.io/libnvidia-container/$distribution/libnvidia-container.list | \
+            sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | \
+            sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
+```
+
+Install the nvidia-container-toolkit:
+```
+sudo apt-get update && sudo apt-get install -y nvidia-container-toolkit
+```
+
+configure docker daemon:
+```
+sudo nvidia-ctk runtime configure --runtime=docker
+```
+
+Restart the docker daemon:
+```
+sudo systemctl restart docker
+```
+check if the nvidia runtime is enabled:
+```
+sudo docker run --rm --runtime=nvidia --gpus all nvidia/cuda:11.6.2-base-ubuntu20.04 nvidia-smi
+```
+
+
+Clone the git repository:
+```
+git clone https://github.com/Nitish05/ENPM690_final.git
+```
+cd into the repository:
+```
+cd ENPM690_final
+```
+
+Build the docker image:
+```
+docker build -t enpm690_final .
+```
+ Give the docker container access to the X server(for display permissions):
+```
+xhost +local:docker
+```
+
+Run the docker container: replace /PATH/TO/REPO/ENPM690_final with the path to the repository on your system
+```
+docker run -it --gpus all --privileged   --env NVIDIA_VISIBLE_DEVICES=all   --env NVIDIA_DRIVER_CAPABILITIES=all  --env DISPLAY=${DISPLAY}  --env QT_X11_NO_MITSHM=1  --volume /tmp/.X11-unix:/tmp/.X11-unix -v /PATH/TO/REPO/ENPM690_final:/home/ENPM690_final   --network host enpm690_final
+```
+## Ubuntu Installation
 unzip the file you will get the following folders:
 ```
 ENPM690_final
@@ -112,7 +173,9 @@ ros2 run DQN_evader test_agent dqn 'dqn_1_stage_4' 5000
 ```
 ros2 run DQN_pursuer test_agent dqn 'dqn_0_stage_4' 3500
 ```
-
+## Video:
+[Training Video](https://drive.google.com/file/d/1tZYc_06mt21np6Y6LVzP8JrUPDd7xHvM/view)
+[Training and Testing](https://drive.google.com/file/d/1xSXV4YkElqgCyZ_0qVD5Ol1GYBYdgInE/view)
 #### Note:
 The number of episodes can be changed by changing the number at the end of the command.
 
