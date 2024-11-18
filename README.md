@@ -3,7 +3,8 @@ This Repository has the code for the final project of ENPM690 - Robot Learning
 
 ## Description
 The project is about training two robots using reinforcement learning evade and pursue each other in a 3D environment. The 3D environment is created using ROS2 foxy and Gazebo. The robots are trained using the DQN algorithm. The project is implemented using the PyTorch library. The robot model used is turtlebot3.
-
+## Demonstration Videos
+[![Algorithm Demo 2](https://img.youtube.com/vi/MK8Tr_1hM-Q/0.jpg)](https://youtu.be/MK8Tr_1hM-Q)
 ## Docker Installation
 Use this only if your system has an NVIDIA GPU and you have Docker installed on your system.
 Install Docker on your system by following the instructions on the official Docker website: https://docs.docker.com/get-docker/
